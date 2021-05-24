@@ -1,14 +1,14 @@
-## Overview
+# Quickstart
 This page provides installation instructions for the [LiteX](https://github.com/enjoy-digital/litex) build system on Linux. This tutorial is intended for Xilinx FPGA users. 
 
-- [Overview](#overview)
-- [Arty A7](#arty-a7)
-- [Xilinx Vivado](#xilinx-vivado)
-  - [Installation](#installation)
-  - [Running](#running)
-- [LiteX](#litex)
-  - [Setup](#setup)
-  - [Building](#building)
+- [Quickstart](#quickstart)
+  - [Arty A7](#arty-a7)
+  - [Xilinx Vivado](#xilinx-vivado)
+    - [Installation](#installation)
+    - [Running](#running)
+  - [LiteX](#litex)
+    - [Setup](#setup)
+    - [Building](#building)
 
 ## Arty A7
 This project targets the [Arty A7](https://store.digilentinc.com/arty-a7-artix-7-fpga-development-board/) development board, which houses a Xilinx 7-series FPGA. The smaller variant (A35T) is sufficient, and can be purchased from electronic suppliers like Digikey and Mouser for about €110. Both the software and gateware on this device can be programmed via USB.
