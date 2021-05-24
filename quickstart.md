@@ -37,10 +37,10 @@ sudo chown $USER:$USER /opt/Xilinx
 It should now be possible to run Vivado from the command line. First, run `source /opt/Xilinx/Vivado/2018.2/settings64.sh` (substituting your Vivado version), then run `vivado`. Consider adding the first command to your `~/.bashrc`, as it is required by the LiteX build system after every new login. The Vivado GUI itself is rarely, if ever, needed when working with LiteX.
    
 ## LiteX
-[LiteX](https://github.com/enjoy-digital/litex) is an open-source Python-based SoC builder.
+[LiteX](https://github.com/enjoy-digital/litex) is an open-source Python-based SoC builder. A thorough description and getting started guide is available in that project's own repository.
 
 ### Setup
-The LiteX setup script will clone several repositories to the current directory, so it is best to create a containing folder (e.g., `mkdir ~/litex`). From within that new directory, follow the [quickstart guide](https://github.com/enjoy-digital/litex#quick-start-guide) in the LiteX README. The `~/litex` directory should then contain several repositories beginning with `lite*`, which are SoC peripherals, and `pythondata-cpu-*`, which contain third-party RTL source code. Test the installation with `lxsim --cpu-type=vexriscv`. This should run the LiteX emulator and bring up a BIOS prompt. 
+We recommend following the [quickstart guide](https://github.com/enjoy-digital/litex#quick-start-guide) in the LiteX README. The LiteX setup script will clone several repositories to the current directory, so it is best to start with a containing folder (e.g., `mkdir ~/litex`). After completing the instructions, the `~/litex` directory should then contain several repositories beginning with `lite*`, which are SoC peripherals, and `pythondata-cpu-*`, which contain third-party RTL source code. Test the installation with `lxsim --cpu-type=vexriscv`. This should run the LiteX emulator and bring up a BIOS prompt. 
 
 ![LiteX BIOS](litex_bios.png)
 
