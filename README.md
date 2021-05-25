@@ -4,7 +4,7 @@ This page provides documentation and links to supplementary materials for hardwa
 ## Contents
 - [Getting started](quickstart.md)
 - VexRiscv
-  - [CPU architecture](vexriscv_arch.md)
+  - [CPU architecture](vexriscv_intro.md)
   - [Development](vexriscv_dev.md)
   - [Build and test](vexriscv_build.md)
 - RISC-V extensions
