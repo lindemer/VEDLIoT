@@ -60,4 +60,4 @@ The Scala source files for the CPU itself are found under `src/main/scala/vexris
 ```
 sbt "runMain vexriscv.demo.GenFull"
 ```
-This will generate a `VexRiscv.v` file containing the entire CPU. Note that these configurations are *not* used in Litex; those require an additional plugin to interface with the SoC's Wishbone bridge. More information on LiteX integration is available [here](vexrsicv_dev.md).
+This will generate a `VexRiscv.v` file containing the entire CPU. Note that these configurations are *not* used in LiteX; those require an additional plugin to interface with the SoC's Wishbone bridge. More information on LiteX integration is available [here](vexrsicv_dev.md).

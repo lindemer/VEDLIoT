@@ -10,6 +10,3 @@ This page provides documentation and links to supplementary materials for hardwa
 - RISC-V extensions
   - [Physical memory protection (PMP)](riscv_pmp.md)
   - [Supervisor PMP (sPMP)](riscv_spmp.md)
-<!-- - Zephyr RTOS
-  - [Introduction](zephyr_intro.md)
-  - [Userspace](zephyr_userspace.md) -->
