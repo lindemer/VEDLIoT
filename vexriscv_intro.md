@@ -4,6 +4,7 @@
 VexRiscv takes a uniquely software-inspired approach to hardware description. Virtually every component is a __plugin__ object connected to one or more stages in the pipeline. Plugins can insert data into the pipeline at one stage, and VexRiscv will automatically propagate those signals through down the pipeline to be accessed by later stages. Plugins can also provide __services__, which are essentially APIs for other plugins to interact with. The result is a highly configurable CPU where everything down to the register file is interchangeable.
 
 - [VexRiscv introduction](#vexriscv-introduction)
+  - [Setup](#setup)
   - [SpinalHDL](#spinalhdl)
     - [Supplementary materials](#supplementary-materials)
     - [Suggestions](#suggestions)
@@ -11,6 +12,9 @@ VexRiscv takes a uniquely software-inspired approach to hardware description. Vi
     - [Plugins](#plugins)
     - [Side effects](#side-effects)
     - [Repository structure](#repository-structure)
+
+## Setup
+We recommend following the installation instructions from the VexRiscv README [found here](https://github.com/SpinalHDL/VexRiscv/blob/master/src/main/scala/vexriscv/demo/CustomInstruction.scala). The rest of the README requires an understanding of how the CPU is structured on a high level, which this page aims to provide.
 
 ## SpinalHDL
 SpinalHDL is a Scala-based hardware description language. Traditional HDLs offer few high-level abstractions, which leads to long and repetitive descriptions of wiring interconnects. Developing complex hardware in those languages is very time consuming, and maintenence can be difficult. SpinalHDL allows developers to leverage high-level abstractions, as well as object-oriented and functional programming patterns, to create concise self-documenting hardware.
@@ -44,7 +48,7 @@ The top-level CPU definition only declares which stages are present and some def
 
 ![VexRiscv plugins](vexriscv_stages.png)
 
-VexRiscv includes two simple examples of custom plugins as a reference, available [here](https://github.com/SpinalHDL/VexRiscv/blob/master/src/main/scala/vexriscv/demo/CustomCsrDemoPlugin.scala). These are a good starting point for new developers. More advanced developers can also implement there own instructions. An example of that is provided [here](https://github.com/SpinalHDL/VexRiscv/blob/master/src/main/scala/vexriscv/demo/CustomInstruction.scala).
+VexRiscv includes two simple examples of custom plugins as a reference, available [here](https://github.com/SpinalHDL/VexRiscv/blob/master/src/main/scala/vexriscv/demo/CustomCsrDemoPlugin.scala). These are a good starting point for new developers. More advanced developers can also implement their own instructions. An example of that is provided [here](https://github.com/SpinalHDL/VexRiscv/blob/master/src/main/scala/vexriscv/demo/CustomInstruction.scala).
 
 ### Side effects
 Plugins that interact with memory or modify the CPU's arbitration (such as PMP) must take into account side effects. This is relevant to more advanced developers. For example, a jump may originate from the __fetch__, __decode__ or __writeback__ stages, but CSR writes occur in the __execute__ stage. This can lead to a hazard where the CSR write modifies the machine state, even though the instruction is going to be flushed. To avoid this, the `CsrPlugin` halts the __execute__ stage for two cycles before performing to allow __memory__ and __writeback__ to finish.
@@ -52,5 +56,8 @@ Plugins that interact with memory or modify the CPU's arbitration (such as PMP) 
 ![VexRiscv side effects](vexriscv_jump.png)
 
 ### Repository structure
-
-Config files
+The Scala source files for the CPU itself are found under `src/main/scala/vexriscv`. Within this directory, the `demo` folder contains several files prefixed with `Gen*`. These contain concrete CPU configurations and can be invoked to generate RTL. From the root directory of the repository, for example, run:
+```
+sbt "runMain vexriscv.demo.GenFull"
+```
+This will generate a `VexRiscv.v` file containing the entire CPU. Note that these configurations are *not* used in Litex; those require an additional plugin to interface with the SoC's Wishbone bridge. More information on LiteX integration is available [here](vexrsicv_dev.md).
