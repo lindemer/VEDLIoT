@@ -9,7 +9,7 @@ VexRiscv takes a uniquely software-inspired approach to hardware description. Vi
     - [Suggestions](#suggestions)
   - [CPU pipeline](#cpu-pipeline)
     - [Plugins](#plugins)
-    - [Services](#services)
+    - [Side effects](#side-effects)
     - [Repository structure](#repository-structure)
 
 ## SpinalHDL
@@ -37,15 +37,20 @@ VexRiscv provides a convenient API for adding new signals of any data type to th
 ```
 object PC extends Stageable(UInt(32 bits))
 ```
-In the above illustration, the PC is given a value in the __fetch__ stage by one plugin with `fetch.insert(PC) := X`. Another plugin needs to check the PC in the __writeback__ stage, which is done with `Y := writeback.input(PC)`. This is all that needs to be done from the developer's perspective. 
+In the above illustration, the PC is given a value in the __fetch__ stage by one plugin with `fetch.insert(PC) := X`. Another plugin needs to check the PC in the __writeback__ stage, which is done with `Y := writeback.input(PC)`. VexRiscv maintains internal consistency on its own; developers typically do not need to worry about how signals are propagated.
 
 ### Plugins
-The top-level CPU definition only declares which stages are present and some default `Stageable` objects. The remaining functionality consists almost entirely of `Plugin`s (see below).
+The top-level CPU definition only declares which stages are present and some default `Stageable` objects. The remaining functionality consists almost entirely of `Plugin`s (see below). `Plugin`s can connect to one or more CPU stages. They interact with each other by reading and inserting `Stageable` objects, providing a __service__ API or by influencing the CPU arbitration. For example, a plugin can halt the pipeline at any stage and flush any instruction. 
 
 ![VexRiscv plugins](vexriscv_stages.png)
 
+VexRiscv includes two simple examples of custom plugins as a reference, available [here](https://github.com/SpinalHDL/VexRiscv/blob/master/src/main/scala/vexriscv/demo/CustomCsrDemoPlugin.scala). These are a good starting point for new developers. More advanced developers can also implement there own instructions. An example of that is provided [here](https://github.com/SpinalHDL/VexRiscv/blob/master/src/main/scala/vexriscv/demo/CustomInstruction.scala).
 
+### Side effects
+Plugins that interact with memory or modify the CPU's arbitration (such as PMP) must take into account side effects. This is relevant to more advanced developers. For example, a jump may originate from the __fetch__, __decode__ or __writeback__ stages, but CSR writes occur in the __execute__ stage. This can lead to a hazard where the CSR write modifies the machine state, even though the instruction is going to be flushed. To avoid this, the `CsrPlugin` halts the __execute__ stage for two cycles before performing to allow __memory__ and __writeback__ to finish.
 
-### Services
+![VexRiscv side effects](vexriscv_jump.png)
 
 ### Repository structure
+
+Config files
