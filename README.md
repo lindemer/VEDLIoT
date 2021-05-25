@@ -4,8 +4,9 @@ This page provides documentation and links to supplementary materials for hardwa
 ## Contents
 - [Getting started](quickstart.md)
 - VexRiscv
-  - [CPU design](vexriscv_design.md)
+  - [CPU architecture](vexriscv_arch.md)
   - [Development](vexriscv_dev.md)
   - [Build and test](vexriscv_build.md)
 - RISC-V extensions
+  - [Physical memory protection (PMP)](riscv_pmp.md)
 - Zephyr RTOS
