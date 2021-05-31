@@ -33,7 +33,7 @@ An overview of the language with illustrations is available [here](https://cdn.j
 ## CPU pipeline
 VexRiscv has a canonincal 5-stage RISC pipeline. In piplelined CPUs, the control signals are propagated through the stages through dedicated register files. For example, if the program counter (PC) signal at the __fetch__ stage is `0xabcd` on some cycle, then the the PC will be `0xabcd` when accessed by the __writeback__ stage four cycles later (assuming no jumps or stalls occur).
 
-![VexRiscv pipeline](doc/vexriscv_registers.png)
+![VexRiscv pipeline](vexriscv_registers.png)
 
 (Images taken from [this](https://cdn.jsdelivr.net/gh/SpinalHDL/SpinalDoc@master/presentation/en/motivation.pdf) SpinalHDL presentation.)
 
@@ -46,14 +46,14 @@ In the above illustration, the PC is given a value in the __fetch__ stage by one
 ### Plugins
 The top-level CPU definition only declares which stages are present and some default `Stageable` objects. The remaining functionality consists almost entirely of `Plugin`s (see below). `Plugin`s can connect to one or more CPU stages. They interact with each other by reading and inserting `Stageable` objects, providing a __service__ API or by influencing the CPU arbitration. For example, a plugin can halt the pipeline at any stage and flush any instruction. 
 
-![VexRiscv plugins](doc/vexriscv_stages.png)
+![VexRiscv plugins](vexriscv_stages.png)
 
 VexRiscv includes two simple examples of custom plugins as a reference, available [here](https://github.com/SpinalHDL/VexRiscv/blob/master/src/main/scala/vexriscv/demo/CustomCsrDemoPlugin.scala). These are a good starting point for new developers. More advanced developers can also implement their own instructions. An example of that is provided [here](https://github.com/SpinalHDL/VexRiscv/blob/master/src/main/scala/vexriscv/demo/CustomInstruction.scala).
 
 ### Side effects
 Plugins that interact with memory or modify the CPU's arbitration (such as PMP) must take into account side effects. This is relevant to more advanced developers. For example, a jump may originate from the __fetch__, __decode__ or __writeback__ stages, but CSR writes occur in the __execute__ stage. This can lead to a hazard where the CSR write modifies the machine state, even though the instruction is going to be flushed. To avoid this, the `CsrPlugin` halts the __execute__ stage for two cycles before performing to allow __memory__ and __writeback__ to finish.
 
-![VexRiscv side effects](doc/vexriscv_jump.png)
+![VexRiscv side effects](vexriscv_jump.png)
 
 ### Repository structure
 The Scala source files for the CPU itself are found under `src/main/scala/vexriscv`. Within this directory, the `demo` folder contains several files prefixed with `Gen*`. These contain concrete CPU configurations and can be invoked to generate RTL. From the root directory of the repository, for example, run:
