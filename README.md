@@ -7,6 +7,4 @@ This page provides documentation and links to supplementary materials for hardwa
   - [Introduction](doc/vexriscv_intro.md)
   - [Testing](doc/vexriscv_test.md)
   - [LiteX integration](doc/vexriscv_litex.md)
-- RISC-V extensions
-  - [Physical memory protection (PMP)](doc/riscv_pmp.md)
-  - [Supervisor PMP (sPMP)](doc/riscv_spmp.md)
+- [RISC-V PMP](doc/riscv_pmp.md)
