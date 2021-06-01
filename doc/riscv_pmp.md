@@ -5,9 +5,10 @@ The RISC-V ISA is developed through open community discussions. At the time of t
   - [Getting involved](#getting-involved)
   - [Physical Memory Protection (PMP)](#physical-memory-protection-pmp)
     - [VexRiscv implementation](#vexriscv-implementation)
-  - [IOPMP](#iopmp)
   - [PMP enhancements (formerly ePMP)](#pmp-enhancements-formerly-epmp)
   - [Memory Protection Unit (MPU, formerly sPMP)](#memory-protection-unit-mpu-formerly-spmp)
+  - [IOPMP](#iopmp)
+  - [Trusted Execution State (TES)](#trusted-execution-state-tes)
 
 ## Getting involved
 All of the extensions described on this page are discussed in mailing lists and virtual meetings via the RISC-V Foundation. It is free to become a member, either as an individual or as an organization. Once you're a member, you can join any of the [mailing lists](https://lists.riscv.org/g/main). After an extension is sufficiently well-defined and agreed upon, addition to the official ISA is done via pull request on the ISA's [GitHub page](https://github.com/riscv/riscv-isa-manual).
@@ -22,12 +23,10 @@ A highly optimized implementation of PMP was developed for the VEDLIoT project. 
 1. The regions are not ordered by priority. In the specification, the permissions associated with the lowest-numbered PMP CSR that matches the current access are applied. In VexRiscv, permissions are granted if *any* matching region have them enabled. (E.g., if three matching regions have R--, -W-, and -WX permissions enabled, respectively, the memory access will be granted RWX access.)
 2. Only the NAPOT addressing mode is implemented. The minimum granularity is 8 bytes, but this can be made coarser in the configuration file.
 
-## IOPMP
-
 ## PMP enhancements (formerly ePMP)
 A number of proposed enhancements to PMP are currently awaiting ratification. The latest draft, at the time of this writing, is avialable [here](https://docs.google.com/document/d/1Mh_aiHYxemL0umN3GTTw8vsbmzHZ_nxZXgjgOUzbvc8/edit#). These changes are motivated by some known vulnerabilities in emedded systems. Please refer to the original document for more information. In a nutshell, the proposal is to allow PMP to place restrictions on lower privilege levels while removing all access to M-mode. See below:
 
-| `pmpcfg` settings | M-mode | S/U-mode |
+| `pmpcfg` flags (`LRWX`) | M-mode | S/U-mode |
 |:-----------------:|:------:|:--------:|
 | `0000` | `----` | `----` |
 | `0001` | `----` | `---X` |
@@ -48,3 +47,9 @@ A number of proposed enhancements to PMP are currently awaiting ratification. Th
 
 ## Memory Protection Unit (MPU, formerly sPMP)
 The RISC-V TEE WG is actively discussing, and hoping to finalize, a so-called *memory protection unit* for RISC-V in 2021. Its former name, supervisor PMP (sPMP), was perhaps more descriptive. The idea is to duplicate PMP, but give control to S-mode software. This scheme allows developers to place an embedded OS in S- instead of M-mode without giving up access to the memory protection hardware required to isolate userspace threads. Then, a security monitor (i.e., hypervisor) can run in M-mode, which uses the existing PMP hardware to separate the OS from TEEs on the same device. The latest revision for RISC-V MPU, as of this writing, is available [here](https://docs.google.com/document/d/1x7esOSBFfpcbDHaRPpe5NEWmav1_8der_nB25Hd5hqs/edit#). The MPU specification incorporates features of ePMP, which is also on the agenda for finalization ion 2021.
+
+## IOPMP
+PMP is designed to block access to memory originating from software running on a single core. It does not protect memory from other masters on the system bus, so a new extension has been proposed to handle this. This may be ratified in 2021, based on the latest discussions. See [here](../draft/iopmp.pdf) for an overview.
+
+## Trusted Execution State (TES)
+Huawei has proposed a TEE extension for RISC-V which is remarkably similar to Arm TrustZone. It is currently marked as inactive on the RISC-V TEE WG, but it is worth noting. A copy has been [included](../draft/tes.pdf) in this repository.
