@@ -40,12 +40,9 @@ It should now be possible to run Vivado from the command line. First, run `sourc
 ## LiteX
 [LiteX](https://github.com/enjoy-digital/litex) is an open-source Python-based SoC builder. A thorough description and getting started guide is available in that project's own repository.
 
-### Setup
-We recommend following the [quick start guide](https://github.com/enjoy-digital/litex#quick-start-guide) in the LiteX README. The LiteX setup script will clone several repositories to the current directory, so it is best to start with a containing folder (e.g., `mkdir ~/litex`). After completing the instructions, the `~/litex` directory should then contain several repositories beginning with `lite*`, which are SoC peripherals, and `pythondata-cpu-*`, which contain third-party RTL source code. Test the installation with `lxsim --cpu-type=vexriscv`. This should run the LiteX emulator and bring up a BIOS prompt. 
 
-![LiteX BIOS](litex_bios.png)
-
-**NB** One of the LiteX dependencies is Verilator, which should be installed from source, _not_ using `apt` on Ubuntu, because this will install an earlier version and may cause build errors. To install the latest version:
+### Dependencies
+One of the LiteX dependencies is Verilator, which should be installed from source, _not_ using `apt` on Ubuntu, because this will install an earlier version and may cause build errors. To install the latest version:
 ```
 sudo apt install git make autoconf g++ flex bison
 git clone http://git.veripool.org/git/verilator
@@ -58,7 +55,29 @@ make
 sudo make install
 ```
 
-OpenOCD is another (unlisted) LiteX dependency, which can be safely installed with `sudo apt install openocd`.
+We also recommend building OpenOCD from source for the same reason:
+```
+sudo apt install libtool libusb-1.0.0-dev
+git clone https://git.code.sf.net/p/openocd/code openocd
+cd openocd
+git checkout v0.10.0
+./bootstrap
+./configure --enable-maintainer-mode --enable-ftdi
+make
+sudo make install
+```
+
+Then, configure your `udev` rules so OpenOCD can connect to the board:
+```
+wget -O 60-openocd.rules https://sf.net/p/openocd/code/ci/master/tree/contrib/60-openocd.rules?format=raw
+sudo cp 60-openocd.rules /etc/udev/rules.d
+sudo udevadm control --reload
+```
+
+### Setup
+We recommend following the [quick start guide](https://github.com/enjoy-digital/litex#quick-start-guide) in the LiteX README. The LiteX setup script will clone several repositories to the current directory, so it is best to start with a containing folder (e.g., `mkdir ~/litex`). After completing the instructions, the `~/litex` directory should then contain several repositories beginning with `lite*`, which are SoC peripherals, and `pythondata-cpu-*`, which contain third-party RTL source code. Test the installation with `lxsim --cpu-type=vexriscv`. This should run the LiteX emulator and bring up a BIOS prompt. 
+
+![LiteX BIOS](litex_bios.png)
 
 ### Building
 Navigate to `~/litex/litex-boards/litex_boards/targets`. This directory contains several Python scripts for building LiteX SoCs on different FPGAs. Run `./digilent_arty.py --help` for a complete list of build options for the Arty A7. With the FPGA connected to the host computer, run `./digilent_arty --build --load` to build and load a design with default settings. (This will take several minutes.) This method does not overwrite NVRAM, so the design will not persist after reset. A synthesis report with hardware utilization statistics will be saved to `build/arty/gateware`.
