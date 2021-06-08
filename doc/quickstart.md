@@ -80,7 +80,7 @@ We recommend following the [quick start guide](https://github.com/enjoy-digital/
 ![LiteX BIOS](litex_bios.png)
 
 ### Building
-Navigate to `~/litex/litex-boards/litex_boards/targets`. This directory contains several Python scripts for building LiteX SoCs on different FPGAs. Run `./digilent_arty.py --help` for a complete list of build options for the Arty A7. With the FPGA connected to the host computer, run `./digilent_arty --build --load` to build and load a design with default settings. (This will take several minutes.) This method does not overwrite NVRAM, so the design will not persist after reset. A synthesis report with hardware utilization statistics will be saved to `build/arty/gateware`.
+Navigate to `~/litex/litex-boards/litex_boards/targets`. This directory contains several Python scripts for building LiteX SoCs on different FPGAs. Run `./digilent_arty.py --help` for a complete list of build options for the Arty A7. With the FPGA connected to the host computer, run `./digilent_arty --build --load` to build and load a design with default settings. (This will take several minutes.) This method does not overwrite NVRAM, so the design will not persist after reset. A synthesis report with hardware utilization statistics will be saved to `build/arty/gateware`. Once flashed correctly, the LEDs on the board should be flashing in sequence. You can connect with `lxterm /dev/ttyUSB0`, which should bring up the LiteX BIOS seen above.
 
 ### Debugging
 It's possible to debug software running on the SoC via USB or Ethernet using [wishbone-tool](https://wishbone-utils.readthedocs.io/en/latest/wishbone-tool/). Debug support must be enabled in LiteX for this to work.
