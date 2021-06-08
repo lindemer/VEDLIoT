@@ -43,6 +43,8 @@ It should now be possible to run Vivado from the command line. First, run `sourc
 ### Setup
 We recommend following the [quick start guide](https://github.com/enjoy-digital/litex#quick-start-guide) in the LiteX README. The LiteX setup script will clone several repositories to the current directory, so it is best to start with a containing folder (e.g., `mkdir ~/litex`). After completing the instructions, the `~/litex` directory should then contain several repositories beginning with `lite*`, which are SoC peripherals, and `pythondata-cpu-*`, which contain third-party RTL source code. Test the installation with `lxsim --cpu-type=vexriscv`. This should run the LiteX emulator and bring up a BIOS prompt. 
 
+![LiteX BIOS](litex_bios.png)
+
 **NB** One of the LiteX dependencies is Verilator, which should be installed from source, _not_ using `apt` on Ubuntu, because this will install an earlier version and may cause build errors. To install the latest version:
 ```
 sudo apt install git make autoconf g++ flex bison
@@ -56,7 +58,7 @@ make
 sudo make install
 ```
 
-![LiteX BIOS](litex_bios.png)
+OpenOCD is another (unlisted) LiteX dependency, which can be safely installed with `sudo apt install openocd`.
 
 ### Building
 Navigate to `~/litex/litex-boards/litex_boards/targets`. This directory contains several Python scripts for building LiteX SoCs on different FPGAs. Run `./digilent_arty.py --help` for a complete list of build options for the Arty A7. With the FPGA connected to the host computer, run `./digilent_arty --build --load` to build and load a design with default settings. (This will take several minutes.) This method does not overwrite NVRAM, so the design will not persist after reset. A synthesis report with hardware utilization statistics will be saved to `build/arty/gateware`.
