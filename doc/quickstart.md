@@ -43,6 +43,19 @@ It should now be possible to run Vivado from the command line. First, run `sourc
 ### Setup
 We recommend following the [quick start guide](https://github.com/enjoy-digital/litex#quick-start-guide) in the LiteX README. The LiteX setup script will clone several repositories to the current directory, so it is best to start with a containing folder (e.g., `mkdir ~/litex`). After completing the instructions, the `~/litex` directory should then contain several repositories beginning with `lite*`, which are SoC peripherals, and `pythondata-cpu-*`, which contain third-party RTL source code. Test the installation with `lxsim --cpu-type=vexriscv`. This should run the LiteX emulator and bring up a BIOS prompt. 
 
+**NB** One of the LiteX dependencies is Verilator, which should be installed from source, _not_ using `apt` on Ubuntu, because this will install an earlier version and may cause build errors. To install the latest version:
+```
+sudo apt install git make autoconf g++ flex bison
+git clone http://git.veripool.org/git/verilator
+unsetenv VERILATOR_ROOT  # For csh
+unset VERILATOR_ROOT  # For bash
+cd verilator
+autoconf
+./configure
+make
+sudo make install
+```
+
 ![LiteX BIOS](litex_bios.png)
 
 ### Building
