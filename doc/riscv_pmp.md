@@ -24,7 +24,7 @@ A highly optimized implementation of PMP was developed for the VEDLIoT project. 
 2. Only the NAPOT addressing mode is implemented. The minimum granularity is 8 bytes, but this can be made coarser in the configuration file.
 
 ## PMP enhancements (formerly ePMP)
-A number of proposed enhancements to PMP are currently awaiting ratification. The latest draft, at the time of this writing, is avialable [here](https://docs.google.com/document/d/1Mh_aiHYxemL0umN3GTTw8vsbmzHZ_nxZXgjgOUzbvc8/edit#). These changes are motivated by some known vulnerabilities in emedded systems. Please refer to the original document for more information. In a nutshell, the proposal is to allow PMP to place restrictions on lower privilege levels while removing all access to M-mode. See below:
+A number of proposed enhancements to PMP are currently awaiting ratification. The latest draft, at the time of this writing, is avialable [here](https://docs.google.com/document/d/1Mh_aiHYxemL0umN3GTTw8vsbmzHZ_nxZXgjgOUzbvc8/edit#). These changes are motivated by some known vulnerabilities in emedded systems. Please refer to the original document for more information. In a nutshell, the proposal changes the meaning of the `LRWX` bits in the `pmpcfg` registers to allow for special permission combinations. These are not very intuitive, because `R` no longer means "read", and so forth. The new meanings of those bits are shown in the truth table below:
 
 | `pmpcfg` flags (`LRWX`) | M-mode | S/U-mode |
 |:-----------------:|:------:|:--------:|
