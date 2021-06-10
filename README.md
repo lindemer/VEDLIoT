@@ -8,3 +8,4 @@ This page provides documentation, links and supplementary materials regarding Li
   - [Testing](doc/vexriscv_test.md)
   - [LiteX integration](doc/vexriscv_litex.md)
 - [RISC-V PMP](doc/riscv_pmp.md)
+  - [VexRiscv MPU](doc/vexriscv_mpu.md)
