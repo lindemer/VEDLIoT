@@ -79,3 +79,12 @@ One of the key use cases for the RISC-V MPU is running an embedded OS in S-mode 
 The `mdeleg` CSR indicates which exceptions will be handled by the next-highest privilege level, in this case S-mode. The MPU throws page fault exceptions, which are numbered 12, 13 and 15. To delegate these to the S-mode trap handler, the corresponding bits must be set in `mdeleg` (i.e., `0xb000`). (Note that all CSRs starting with the letter `m` are accesible only to M-mode.) After entering S-mode, the trap handler for those exceptions is declared by writing `stvec`. (Note that most of the M-mode CSRs have siblings in S-mode, i.e., `scause`, `sstatus`, etc.)
 
 ## Integration with LiteX
+Adding this extension to LiteX is a fairly simple process:
+1. Clone `lindemer`'s fork of VexRiscv and checkout the `mpu` branch.
+2. Follow the instructions in [this README](https://github.com/litex-hub/pythondata-cpu-vexriscv/tree/master/pythondata_cpu_vexriscv/verilog) to point LiteX's VexRiscv build script to your local clone of VexRiscv.
+3. Rebuild the `VexRiscv_Secure` variant of the CPU. The easiest way to do this is to simply delete the existing files (e.g., `rm VexRiscv_Secure*`) and then run `make`.
+
+The MPU plugin is integrated _directly_ into the PMP plugin's source code, and it re-uses the PMP plugin's configuration values. For example, if you rebuild the CPU with the following command, you will get a variant where both the PMP and the MPU have 16 regions and 256-byte granularity. (Keep in mind that the granularity has to be a power of 2, minimum 8 bytes, because only the NAPOT mode is implemented. 0-16 regions are allowed.) It would be quite trivial to create a variant where the PMP and MPU have different settings, but I left it this way so that it stays consistent with the upstream VexRiscv API.
+```
+sbt compile "runMain vexriscv.GenCoreDefault --pmpRegions 16 --pmpGranularity 256 --csrPluginConfig secure --outputFile VexRiscv_Secure"
+```
