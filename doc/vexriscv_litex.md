@@ -25,5 +25,3 @@ After defining a new variant and building it, you'll want to reference it in the
 ```
 ./arty.py --cpu-type=vexriscv --cpu-variant=my+variant --build
 ```
-
-## Loading software
